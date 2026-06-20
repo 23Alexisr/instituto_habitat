@@ -28,7 +28,7 @@ class CertificadoResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Certificados';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -37,13 +37,36 @@ class CertificadoResource extends Resource
                 ->label('Participante / Curso')
                 ->required()
                 ->searchable()
-                ->options(function () {
-                    return Inscripcion::with(['participante', 'curso'])
-                        ->where('estado_finalizacion', 'aprobado')
+                ->getSearchResultsUsing(function (string $search): array {
+                    $query = Inscripcion::with(['participante', 'curso'])
+                        ->where('estado_finalizacion', 'aprobado');
+
+                    if (filled($search)) {
+                        $query->where(function (Builder $q) use ($search): void {
+                            $q->whereHas('participante', fn(Builder $q) =>
+                                $q->where('nombre', 'like', "%{$search}%")
+                                  ->orWhere('dni', 'like', "%{$search}%")
+                            )
+                            ->orWhereHas('curso', fn(Builder $q) =>
+                                $q->where('nombre', 'like', "%{$search}%")
+                            );
+                        });
+                    }
+
+                    return $query
+                        ->limit(50)
                         ->get()
                         ->mapWithKeys(fn(Inscripcion $inscripcion) => [
                             $inscripcion->id => "{$inscripcion->participante->nombre} — {$inscripcion->curso->nombre}",
-                        ]);
+                        ])
+                        ->toArray();
+                })
+                ->getOptionLabelUsing(function (int|string $value): ?string {
+                    $inscripcion = Inscripcion::with(['participante', 'curso'])->find($value);
+
+                    return $inscripcion
+                        ? "{$inscripcion->participante->nombre} — {$inscripcion->curso->nombre}"
+                        : null;
                 })
                 ->rules([
                     function () {
@@ -58,7 +81,7 @@ class CertificadoResource extends Resource
                 ->validationMessages([
                     'required' => 'Debes seleccionar una inscripción aprobada.',
                 ])
-                ->helperText('Solo se muestran participantes con estado aprobado en el curso.'),
+                ->helperText('Busca por nombre del participante, DNI o nombre del curso.'),
 
             Forms\Components\Select::make('estado')
                 ->label('Estado')
