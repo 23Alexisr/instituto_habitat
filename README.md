@@ -1,59 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Sistema de Gestión de Emisión de Certificados — Instituto Hábitat
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+Contexto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+El Instituto Peruano de Estudios del Hábitat (institución privada, Miraflores, Lima, dedicada a investigación, educación continua, asesoría y consultoría en vivienda y desarrollo urbano) emite certificados a los participantes de sus cursos de especialización de forma manual. Este proceso genera:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Errores en los datos del certificado (nombre, curso, fechas)
+Certificados duplicados
+Falta de control sobre certificados pendientes de emisión
+Demoras en la entrega tras finalizar el curso
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Este sistema busca automatizar y estandarizar ese proceso, midiendo el impacto mediante dos indicadores de calidad, en el marco de un diseño de investigación Pre-Experimental (medición pre-test/post-test).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Indicadores de calidad medidos
 
-## Laravel Sponsors
+IndicadorQué mide% de certificados con errorCertificados anulados / total de certificados emitidos% de certificados pendientes por emitirCertificados en estado "pendiente" / total de certificados
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Evaluado bajo el modelo ISO/IEC 25010, priorizando adecuación funcional, seguridad, eficiencia de desempeño y fiabilidad.
 
-### Premium Partners
+Alcance y limitaciones (importante)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Este es un prototipo académico, no un sistema en producción. Específicamente:
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+No integra con SUNAT ni emite documentos tributarios. Los "certificados" son documentos internos del instituto, no comprobantes de pago.
+No requiere firma digital ni certificado X.509.
+El código de verificación del certificado es un identificador interno simple, no un mecanismo criptográfico robusto.
+Los datos de prueba para la medición pre-test son simulados, documentados como tal en el informe académico.
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Requerimientos funcionales
 
-## Security Vulnerabilities
+IDRequerimientoRF-01Registro de participantes (nombre, DNI, curso, fecha)RF-02Catálogo de cursos (código, nombre, fechas, docente)RF-03Asociar participante a curso con estado de finalización (aprobado/desaprobado)RF-04Generar certificado en PDF con código único de verificaciónRF-05Validación de datos obligatorios antes de generar el certificadoRF-06Estado del certificado: pendiente / emitido / anuladoRF-07Anular y reemitir certificado con motivo registradoRF-08Búsqueda por participante, curso o código de verificaciónRF-09Envío automático del PDF al correo del participanteRF-10Dashboard con % error, % pendientes y total de certificados emitidos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Stack tecnológico
 
-## License
+ComponenteTecnologíaBackend + Panel adminLaravel 12 + Filament 3Base de datosMySQL (vía XAMPP en desarrollo local)Generación de PDFLibrería integrada en el servicio de certificados
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Convención de nombres
+
+Todo el código propio (tablas, columnas, clases, variables, métodos) está nombrado en español. Los nombres de métodos y parámetros propios del framework (hasMany, belongsTo, save, $search, $record, $get, $set, etc.) se mantienen en inglés tal cual los define Laravel/Filament, ya que son parte de su funcionamiento interno y no se traducen.
+
+Instalación local
+
+Requiere PHP 8.2+, Composer, y MySQL corriendo (vía XAMPP u otro).
+
+bash# Clonar el repositorio
+git clone https://github.com/23Alexisr/instituto_habitat.git
+cd instituto_habitat
+
+# Instalar dependencias
+composer install
+
+# Configurar entorno
+cp .env.example .env
+php artisan key:generate
+# Editar .env con los datos de tu base de datos MySQL (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+
+# Crear la base de datos en phpMyAdmin con el nombre indicado en DB_DATABASE,
+# luego correr las migraciones
+php artisan migrate
+
+# Crear un usuario administrador para el panel
+php artisan make:filament-user
+
+# Levantar el servidor
+php artisan serve
+
+Accede al panel en http://127.0.0.1:8000/admin.
+
+Módulos del sistema
+
+
+Cursos: catálogo de cursos de especialización del instituto.
+Participantes: registro de personas inscritas en los cursos.
+Inscripciones: relación entre participante y curso, con estado de finalización (aprobado/desaprobado). Un certificado solo puede generarse si el participante tiene una inscripción en estado aprobado.
+Certificados: emisión, anulación y reemisión de certificados, con código de verificación y exportación a PDF.
+Dashboard: panel con los indicadores de calidad del proceso.
+
+
+Estado actual del proyecto
+
+
+ Fase 1 — Setup del proyecto y migraciones
+ Fase 2 — Filament Resources (Cursos, Participantes, Certificados)
+ Fase 3 — Generación de PDF, código de verificación, estados y reemisión
+ Fase 4 — Envío de correo, búsqueda y dashboard de indicadores
+ Fase 5 — Datos de prueba (seeders) para medición pre-test
