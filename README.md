@@ -25,23 +25,27 @@ Alcance y limitaciones
 Este es un prototipo académico, no un sistema en producción. Específicamente:
 
 
-No integra con SUNAT ni emite documentos tributarios. Los "certificados" son documentos internos del instituto, no comprobantes de pago.
-No requiere firma digital ni certificado X.509.
-El código de verificación del certificado es un identificador interno simple, no un mecanismo criptográfico robusto.
-Los datos de prueba para la medición pre-test son simulados, documentados como tal en el informe académico.
+
 
 
 Requerimientos funcionales
 
-IDRequerimientoRF-01Registro de participantes (nombre, DNI, curso, fecha)RF-02Catálogo de cursos (código, nombre, fechas, docente)RF-03Asociar participante a curso con estado de finalización (aprobado/desaprobado)RF-04Generar certificado en PDF con código único de verificaciónRF-05Validación de datos obligatorios antes de generar el certificadoRF-06Estado del certificado: pendiente / emitido / anuladoRF-07Anular y reemitir certificado con motivo registradoRF-08Búsqueda por participante, curso o código de verificaciónRF-09Envío automático del PDF al correo del participanteRF-10Dashboard con % error, % pendientes y total de certificados emitidos
+IDRequerimiento
+RF-01Registro de participantes (nombre, DNI, curso, fecha)
+RF-02Catálogo de cursos (código, nombre, fechas, docente)
+RF-03Asociar participante a curso con estado de finalización (aprobado/desaprobado)
+RF-04Generar certificado en PDF con código único de verificación
+RF-05Validación de datos obligatorios antes de generar el certificado
+RF-06Estado del certificado: pendiente / emitido / anulado
+RF-07Anular y reemitir certificado con motivo registrado
+RF-08Búsqueda por participante, curso o código de verificación
+RF-09Envío automático del PDF al correo del participante
+RF-10Dashboard con % error, % pendientes y total de certificados emitidos
 
 Stack tecnológico
 
 ComponenteTecnologíaBackend + Panel adminLaravel 12 + Filament 3Base de datosMySQL (vía XAMPP en desarrollo local)Generación de PDFLibrería integrada en el servicio de certificados
 
-Convención de nombres
-
-Todo el código propio (tablas, columnas, clases, variables, métodos) está nombrado en español. Los nombres de métodos y parámetros propios del framework (hasMany, belongsTo, save, $search, $record, $get, $set, etc.) se mantienen en inglés tal cual los define Laravel/Filament, ya que son parte de su funcionamiento interno y no se traducen.
 
 Instalación local
 
@@ -82,10 +86,6 @@ Dashboard: panel con los indicadores de calidad del proceso.
 
 
 Estado actual del proyecto
+ PRODUCCIÓN 
 
 
- Fase 1  Setup del proyecto y migraciones
- Fase 2  Filament Resources (Cursos, Participantes, Certificados)
- Fase 3  Generación de PDF, código de verificación, estados y reemisión
- Fase 4  Envío de correo, búsqueda y dashboard de indicadores
- Fase 5  Datos de prueba (seeders) para medición pre-test
