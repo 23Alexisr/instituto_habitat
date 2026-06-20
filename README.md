@@ -1,4 +1,4 @@
-Sistema de Gestión de Emisión de Certificados — Instituto Hábitat
+Sistema de Gestión de Emisión de Certificados Instituto Hábitat
 
 
 Contexto
@@ -20,7 +20,7 @@ IndicadorQué mide% de certificados con errorCertificados anulados / total de ce
 
 Evaluado bajo el modelo ISO/IEC 25010, priorizando adecuación funcional, seguridad, eficiencia de desempeño y fiabilidad.
 
-Alcance y limitaciones (importante)
+Alcance y limitaciones 
 
 Este es un prototipo académico, no un sistema en producción. Específicamente:
 
@@ -84,8 +84,8 @@ Dashboard: panel con los indicadores de calidad del proceso.
 Estado actual del proyecto
 
 
- Fase 1 — Setup del proyecto y migraciones
- Fase 2 — Filament Resources (Cursos, Participantes, Certificados)
- Fase 3 — Generación de PDF, código de verificación, estados y reemisión
- Fase 4 — Envío de correo, búsqueda y dashboard de indicadores
- Fase 5 — Datos de prueba (seeders) para medición pre-test
+ Fase 1  Setup del proyecto y migraciones
+ Fase 2  Filament Resources (Cursos, Participantes, Certificados)
+ Fase 3  Generación de PDF, código de verificación, estados y reemisión
+ Fase 4  Envío de correo, búsqueda y dashboard de indicadores
+ Fase 5  Datos de prueba (seeders) para medición pre-test
