@@ -31,20 +31,31 @@ class ParticipanteResource extends Resource
                 ->label('DNI')
                 ->required()
                 ->maxLength(8)
+                ->minLength(8)
+                ->inputMode('numeric')
+                ->extraInputAttributes(['pattern' => '\d*'])
                 ->rules(['regex:/^\d{8}$/'])
                 ->unique(table: Participante::class, column: 'dni', ignoreRecord: true)
                 ->validationMessages([
-                    'required' => 'El DNI es obligatorio.',
-                    'regex'    => 'El DNI debe contener exactamente 8 dígitos numéricos.',
-                    'unique'   => 'Ya existe un participante con ese DNI.',
+                    'required'  => 'El DNI es obligatorio.',
+                    'min'       => 'El DNI debe tener exactamente 8 dígitos.',
+                    'max'       => 'El DNI debe tener exactamente 8 dígitos.',
+                    'regex'     => 'El DNI debe contener exactamente 8 dígitos numéricos.',
+                    'unique'    => 'Ya existe un participante con ese DNI.',
                 ]),
 
             Forms\Components\TextInput::make('nombre')
                 ->label('Nombre completo')
                 ->required()
+                ->minLength(3)
                 ->maxLength(255)
+                ->rules(['regex:/^[\p{L}\s.\-\']+$/u'])
+                ->extraInputAttributes(['style' => 'text-transform: capitalize'])
+                ->helperText('Se guardará con mayúscula inicial en cada palabra.')
                 ->validationMessages([
                     'required' => 'El nombre completo es obligatorio.',
+                    'min'      => 'El nombre debe tener al menos 3 caracteres.',
+                    'regex'    => 'El nombre solo puede contener letras, espacios y guiones.',
                 ]),
 
             Forms\Components\TextInput::make('correo')
@@ -53,6 +64,7 @@ class ParticipanteResource extends Resource
                 ->required()
                 ->maxLength(255)
                 ->unique(table: Participante::class, column: 'correo', ignoreRecord: true)
+                ->helperText('Se guardará en minúsculas automáticamente.')
                 ->validationMessages([
                     'required' => 'El correo electrónico es obligatorio.',
                     'email'    => 'El correo electrónico no tiene un formato válido.',
