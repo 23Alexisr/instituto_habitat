@@ -106,11 +106,14 @@ class CertificadoResource extends Resource
             Forms\Components\Textarea::make('motivo_anulacion')
                 ->label('Motivo de anulación')
                 ->rows(3)
+                ->minLength(10)
                 ->maxLength(1000)
                 ->visible(fn(Forms\Get $get): bool => $get('estado') === 'anulado')
                 ->required(fn(Forms\Get $get): bool => $get('estado') === 'anulado')
+                ->helperText('Describe el error con suficiente detalle para el historial.')
                 ->validationMessages([
                     'required' => 'Debes ingresar el motivo de anulación.',
+                    'min'      => 'El motivo debe tener al menos 10 caracteres.',
                 ]),
         ]);
     }
@@ -188,7 +191,9 @@ class CertificadoResource extends Resource
                     ->form([
                         Forms\Components\TextInput::make('dni')
                             ->label('DNI')
-                            ->maxLength(8),
+                            ->maxLength(8)
+                            ->inputMode('numeric')
+                            ->extraInputAttributes(['pattern' => '\d*']),
                     ])
                     ->query(fn(Builder $query, array $data): Builder =>
                         $query->when(
@@ -282,9 +287,12 @@ class CertificadoResource extends Resource
                             ->label('Motivo de anulación')
                             ->required()
                             ->rows(3)
+                            ->minLength(10)
                             ->maxLength(1000)
+                            ->helperText('Describe el error con suficiente detalle para el historial.')
                             ->validationMessages([
                                 'required' => 'El motivo de anulación es obligatorio.',
+                                'min'      => 'El motivo debe tener al menos 10 caracteres.',
                             ]),
                     ])
                     ->modalHeading('Anular certificado')

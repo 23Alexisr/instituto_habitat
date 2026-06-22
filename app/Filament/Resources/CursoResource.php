@@ -30,28 +30,44 @@ class CursoResource extends Resource
             Forms\Components\TextInput::make('codigo')
                 ->label('Código')
                 ->required()
+                ->minLength(2)
                 ->maxLength(20)
+                ->rules(['regex:/^[A-Za-z0-9\-_]+$/'])
+                ->extraInputAttributes(['style' => 'text-transform: uppercase'])
+                ->helperText('Se guardará en mayúsculas. Ej: CONT-2025')
                 ->unique(table: Curso::class, column: 'codigo', ignoreRecord: true)
                 ->validationMessages([
                     'required' => 'El código es obligatorio.',
+                    'min'      => 'El código debe tener al menos 2 caracteres.',
                     'unique'   => 'Ya existe un curso con ese código.',
                     'max'      => 'El código no puede exceder 20 caracteres.',
+                    'regex'    => 'El código solo puede contener letras, números, guiones y guiones bajos.',
                 ]),
 
             Forms\Components\TextInput::make('nombre')
                 ->label('Nombre del curso')
                 ->required()
+                ->minLength(3)
                 ->maxLength(255)
+                ->extraInputAttributes(['style' => 'text-transform: capitalize'])
+                ->helperText('Se guardará con mayúscula inicial en cada palabra.')
                 ->validationMessages([
                     'required' => 'El nombre del curso es obligatorio.',
+                    'min'      => 'El nombre del curso debe tener al menos 3 caracteres.',
                 ]),
 
             Forms\Components\TextInput::make('docente')
                 ->label('Docente')
                 ->required()
+                ->minLength(3)
                 ->maxLength(255)
+                ->rules(['regex:/^[\p{L}\s.\-\']+$/u'])
+                ->extraInputAttributes(['style' => 'text-transform: capitalize'])
+                ->helperText('Se guardará con mayúscula inicial en cada palabra.')
                 ->validationMessages([
                     'required' => 'El nombre del docente es obligatorio.',
+                    'min'      => 'El nombre del docente debe tener al menos 3 caracteres.',
+                    'regex'    => 'El nombre del docente solo puede contener letras, espacios y guiones.',
                 ]),
 
             Forms\Components\DatePicker::make('fecha_inicio')
