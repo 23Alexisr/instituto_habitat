@@ -13,15 +13,26 @@ Route::get('/certificados/{certificado}/descargar', [\App\Http\Controllers\Certi
 Route::get('/verificar/{codigo}', [\App\Http\Controllers\VerificadorController::class, 'verificar'])
     ->name('certificados.verificar');
 
-// RUTA TEMPORAL — solo para deploy inicial, ELIMINAR después de correr las migraciones
-Route::get('/deploy-migrate/{token}', function (string $token) {
-    if ($token !== config('app.key')) {
+// RUTA TEMPORAL — solo para deploy inicial, ELIMINAR después de usarla
+Route::get('/deploy/{token}', function (string $token) {
+    if ($token !== 'habitat2026deploy') {
         abort(403);
     }
+    $salida = [];
     try {
         \Artisan::call('migrate', ['--force' => true]);
-        return '<pre>OK: ' . \Artisan::output() . '</pre>';
+        $salida[] = '✅ migrate: ' . trim(\Artisan::output());
+
+        \Artisan::call('db:seed', ['--force' => true]);
+        $salida[] = '✅ seed: ' . trim(\Artisan::output());
+
+        \Artisan::call('optimize');
+        $salida[] = '✅ optimize: OK';
+
+        \Artisan::call('storage:link');
+        $salida[] = '✅ storage:link: OK';
     } catch (\Throwable $e) {
-        return '<pre>ERROR: ' . $e->getMessage() . '</pre>';
+        $salida[] = '❌ ERROR: ' . $e->getMessage();
     }
+    return '<pre style="font-family:monospace;padding:20px">' . implode("\n", $salida) . '</pre>';
 });
