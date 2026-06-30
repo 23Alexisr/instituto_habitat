@@ -35,4 +35,8 @@ Route::get('/deploy/{token}', function (string $token) {
         $salida[] = '❌ ERROR: ' . $e->getMessage();
     }
     return '<pre style="font-family:monospace;padding:20px">' . implode("\n", $salida) . '</pre>';
-});
+})->withoutMiddleware([
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\Session\Middleware\AuthenticateSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+]);
