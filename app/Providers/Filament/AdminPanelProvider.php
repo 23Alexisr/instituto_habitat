@@ -34,12 +34,14 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->brandName('IPEH')
             ->brandLogo(asset('images/logo.svg'))
+            ->favicon(asset('images/log-.svg'))
             ->colors([
                 'primary' => Color::hex('#8DC63F'),
             ])
             ->renderHook(
                 PanelsRenderHook::STYLES_AFTER,
                 fn(): HtmlString => new HtmlString('
+                    <link rel="icon" href="/images/log-.svg" type="image/svg+xml">
                     <style>
                         /* ━━━ SIDEBAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
                         img.fi-logo {
