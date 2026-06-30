@@ -28,7 +28,9 @@ class CertificadoResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Certificados';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationGroup = 'Certificados';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -193,7 +195,10 @@ class CertificadoResource extends Resource
                             ->label('DNI')
                             ->maxLength(8)
                             ->inputMode('numeric')
-                            ->extraInputAttributes(['pattern' => '\d*']),
+                            ->extraInputAttributes([
+                                'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+                                'pattern'  => '\d*',
+                            ]),
                     ])
                     ->query(fn(Builder $query, array $data): Builder =>
                         $query->when(

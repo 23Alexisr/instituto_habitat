@@ -22,6 +22,8 @@ class ParticipanteResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Participantes';
 
+    protected static ?string $navigationGroup = 'Academia';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -33,7 +35,10 @@ class ParticipanteResource extends Resource
                 ->maxLength(8)
                 ->minLength(8)
                 ->inputMode('numeric')
-                ->extraInputAttributes(['pattern' => '\d*'])
+                ->extraInputAttributes([
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+                    'pattern'  => '\d*',
+                ])
                 ->rules(['regex:/^\d{8}$/'])
                 ->unique(table: Participante::class, column: 'dni', ignoreRecord: true)
                 ->validationMessages([
@@ -63,11 +68,12 @@ class ParticipanteResource extends Resource
                 ->email()
                 ->required()
                 ->maxLength(255)
+                ->rules(['email:rfc'])
                 ->unique(table: Participante::class, column: 'correo', ignoreRecord: true)
-                ->helperText('Se guardará en minúsculas automáticamente.')
+                ->helperText('Debe tener formato válido: ejemplo@dominio.com')
                 ->validationMessages([
                     'required' => 'El correo electrónico es obligatorio.',
-                    'email'    => 'El correo electrónico no tiene un formato válido.',
+                    'email'    => 'El correo no es válido. Debe incluir @ y un dominio (ej: usuario@gmail.com).',
                     'unique'   => 'Ya existe un participante con ese correo.',
                 ]),
         ]);

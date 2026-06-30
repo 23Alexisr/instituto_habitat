@@ -27,6 +27,8 @@ class InscripcionResource extends Resource
 
     protected static ?string $slug = 'inscripciones';
 
+    protected static ?string $navigationGroup = 'Academia';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
