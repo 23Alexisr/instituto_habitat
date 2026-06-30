@@ -49,18 +49,13 @@ class CursoResource extends Resource
             Forms\Components\TextInput::make('codigo')
                 ->label('Código')
                 ->required()
-                ->minLength(2)
-                ->maxLength(20)
-                ->rules(['regex:/^[A-Za-z0-9\-_]+$/'])
-                ->extraInputAttributes(['style' => 'text-transform: uppercase'])
-                ->helperText('Generado automáticamente. Puedes modificarlo si hay conflicto.')
+                ->readOnly()
+                ->extraInputAttributes(['style' => 'text-transform: uppercase; background:#f9fafb; cursor:not-allowed'])
+                ->helperText('Generado automáticamente a partir del nombre del curso.')
                 ->unique(table: Curso::class, column: 'codigo', ignoreRecord: true)
                 ->validationMessages([
                     'required' => 'El código es obligatorio.',
-                    'min'      => 'El código debe tener al menos 2 caracteres.',
-                    'unique'   => 'Ya existe un curso con ese código. Modifícalo manualmente.',
-                    'max'      => 'El código no puede exceder 20 caracteres.',
-                    'regex'    => 'El código solo puede contener letras, números, guiones y guiones bajos.',
+                    'unique'   => 'Ya existe un curso con ese código.',
                 ]),
 
             Forms\Components\TextInput::make('docente')
