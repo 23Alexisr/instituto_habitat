@@ -29,23 +29,6 @@ class CursoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('codigo')
-                ->label('Código')
-                ->required()
-                ->minLength(2)
-                ->maxLength(20)
-                ->rules(['regex:/^[A-Za-z0-9\-_]+$/'])
-                ->extraInputAttributes(['style' => 'text-transform: uppercase'])
-                ->helperText('Se guardará en mayúsculas. Ej: CONT-2025')
-                ->unique(table: Curso::class, column: 'codigo', ignoreRecord: true)
-                ->validationMessages([
-                    'required' => 'El código es obligatorio.',
-                    'min'      => 'El código debe tener al menos 2 caracteres.',
-                    'unique'   => 'Ya existe un curso con ese código.',
-                    'max'      => 'El código no puede exceder 20 caracteres.',
-                    'regex'    => 'El código solo puede contener letras, números, guiones y guiones bajos.',
-                ]),
-
             Forms\Components\TextInput::make('nombre')
                 ->label('Nombre del curso')
                 ->required()
@@ -53,9 +36,31 @@ class CursoResource extends Resource
                 ->maxLength(255)
                 ->extraInputAttributes(['style' => 'text-transform: capitalize'])
                 ->helperText('Se guardará con mayúscula inicial en cada palabra.')
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (string $state, Forms\Set $set, string $operation) {
+                    if ($operation !== 'create') return;
+                    $set('codigo', self::generarCodigo($state));
+                })
                 ->validationMessages([
                     'required' => 'El nombre del curso es obligatorio.',
                     'min'      => 'El nombre del curso debe tener al menos 3 caracteres.',
+                ]),
+
+            Forms\Components\TextInput::make('codigo')
+                ->label('Código')
+                ->required()
+                ->minLength(2)
+                ->maxLength(20)
+                ->rules(['regex:/^[A-Za-z0-9\-_]+$/'])
+                ->extraInputAttributes(['style' => 'text-transform: uppercase'])
+                ->helperText('Generado automáticamente. Puedes modificarlo si hay conflicto.')
+                ->unique(table: Curso::class, column: 'codigo', ignoreRecord: true)
+                ->validationMessages([
+                    'required' => 'El código es obligatorio.',
+                    'min'      => 'El código debe tener al menos 2 caracteres.',
+                    'unique'   => 'Ya existe un curso con ese código. Modifícalo manualmente.',
+                    'max'      => 'El código no puede exceder 20 caracteres.',
+                    'regex'    => 'El código solo puede contener letras, números, guiones y guiones bajos.',
                 ]),
 
             Forms\Components\TextInput::make('docente')
@@ -142,5 +147,25 @@ class CursoResource extends Resource
             'create' => Pages\CreateCurso::route('/create'),
             'edit'   => Pages\EditCurso::route('/{record}/edit'),
         ];
+    }
+
+    public static function generarCodigo(string $nombre): string
+    {
+        $omitir = ['de', 'del', 'la', 'el', 'las', 'los', 'un', 'una', 'y', 'e', 'o', 'en', 'a', 'con', 'por', 'para', 'al'];
+
+        $palabras = preg_split('/\s+/', trim($nombre));
+
+        $iniciales = '';
+        foreach ($palabras as $palabra) {
+            $limpia = preg_replace('/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/u', '', $palabra);
+            if ($limpia === '' || in_array(mb_strtolower($limpia), $omitir)) continue;
+            $iniciales .= mb_strtoupper(mb_substr($limpia, 0, 1));
+        }
+
+        if ($iniciales === '') {
+            $iniciales = mb_strtoupper(mb_substr($nombre, 0, 3));
+        }
+
+        return $iniciales . date('Y');
     }
 }
