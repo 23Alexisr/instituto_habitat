@@ -4,9 +4,11 @@ if (($_GET['token'] ?? '') !== 'habitat2026deploy') {
     die('403 Forbidden');
 }
 
-require __DIR__ . '/../vendor/autoload.php';
+$appPath = __DIR__ . '/../instituto_habitat';
 
-$app = require __DIR__ . '/../bootstrap/app.php';
+require $appPath . '/vendor/autoload.php';
+
+$app = require $appPath . '/bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
