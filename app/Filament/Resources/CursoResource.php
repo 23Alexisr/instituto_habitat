@@ -37,8 +37,8 @@ class CursoResource extends Resource
                 ->extraInputAttributes(['style' => 'text-transform: capitalize'])
                 ->helperText('Se guardará con mayúscula inicial en cada palabra.')
                 ->live(debounce: 500)
-                ->afterStateUpdated(function (string $state, Forms\Set $set, string $operation) {
-                    if ($operation !== 'create') return;
+                ->afterStateUpdated(function (?string $state, Forms\Set $set, string $operation) {
+                    if ($operation !== 'create' || blank($state)) return;
                     $set('codigo', self::generarCodigo($state));
                 })
                 ->validationMessages([
