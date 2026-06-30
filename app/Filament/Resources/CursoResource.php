@@ -166,6 +166,6 @@ class CursoResource extends Resource
             $iniciales = mb_strtoupper(mb_substr($nombre, 0, 3));
         }
 
-        return $iniciales . date('Y');
+        return $iniciales . '-' . date('Y');
     }
 }
