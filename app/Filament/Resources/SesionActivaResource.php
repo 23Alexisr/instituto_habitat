@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class SesionActivaResource extends Resource
 {
@@ -26,6 +27,14 @@ class SesionActivaResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([]);
+    }
+
+    // Toda visita al sitio (login, verificador público, etc.) crea una fila en
+    // "sessions" aunque nadie inicie sesión. Sin este filtro, tráfico anónimo de
+    // cualquier país aparecía "en línea" y se veía como si hubieran hackeado la cuenta.
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereNotNull('user_id');
     }
 
     public static function table(Table $table): Table
