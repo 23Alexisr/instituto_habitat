@@ -53,7 +53,7 @@ class AdminPanelProvider extends PanelProvider
                             padding-bottom: 1.25rem !important;
                         }
 
-                        /* ━━━ LOGIN — FONDO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+                        /* ━━━ LOGIN - FONDO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
                         .fi-simple-layout {
                             position: relative !important;
                             overflow: hidden !important;
@@ -86,7 +86,7 @@ class AdminPanelProvider extends PanelProvider
                             z-index: 1 !important;
                         }
 
-                        /* ━━━ LOGIN — LOGO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+                        /* ━━━ LOGIN - LOGO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
                         @keyframes ipeh-logo-drop {
                             0%   { opacity: 0; transform: translateY(-30px) scale(0.90); filter: blur(5px); }
                             100% { opacity: 1; transform: translateY(0)     scale(1);    filter: blur(0);   }
@@ -105,7 +105,7 @@ class AdminPanelProvider extends PanelProvider
                                 ipeh-logo-glow 4s 1.2s ease-in-out infinite;
                         }
 
-                        /* ━━━ LOGIN — CARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+                        /* ━━━ LOGIN - CARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
                         @keyframes ipeh-card-rise {
                             0%   { opacity: 0; transform: translateY(24px) scale(0.97); }
                             100% { opacity: 1; transform: translateY(0)    scale(1);    }
@@ -148,7 +148,7 @@ class AdminPanelProvider extends PanelProvider
                             animation: ipeh-shimmer 2.5s linear infinite;
                         }
 
-                        /* ━━━ LOGIN — TIPOGRAFÍA ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+                        /* ━━━ LOGIN - TIPOGRAFÍA ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
                         .fi-simple-header-subheading {
                             font-size: 0.875rem !important;
                             color: #58595B !important;

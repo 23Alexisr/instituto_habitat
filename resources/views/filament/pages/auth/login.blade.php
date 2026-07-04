@@ -170,7 +170,7 @@ body { font-family: 'Inter', 'Segoe UI', sans-serif; }
             </div>
         </div>
 
-        {{-- ── PANEL DERECHO — formulario ──────────────────── --}}
+        {{-- -- PANEL DERECHO - formulario -------------------- --}}
         <div class="ipeh-right" x-data="{ tab: 'email' }">
             <p class="ipeh-title">¡Inicia sesión!</p>
             <p class="ipeh-subtitle">Accede a tu cuenta para continuar</p>

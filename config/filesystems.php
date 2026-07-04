@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        // Disco para fotos de participantes. Guarda fuera de storage/app pa que quede
+        // dentro de public_html (servible directo por Apache/Hostinger sin symlink).
+        'participantes' => [
+            'driver' => 'local',
+            'root' => env('PUBLIC_HTML_PATH', dirname(base_path()).'/public_html').'/uploads/participantes',
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/uploads/participantes',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
