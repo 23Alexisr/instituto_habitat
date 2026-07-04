@@ -251,27 +251,7 @@ class CertificadoResource extends Resource
                         $record->fecha_emision = now()->toDateString();
                         $record->save();
 
-                        $record->load('inscripcion.participante', 'inscripcion.curso');
-                        $correo = $record->inscripcion->participante->correo;
-
-                        try {
-                            $pdf = new ServicioCertificadoPdf();
-                            Mail::to($correo)->send(
-                                new CertificadoEmitidoMail($record, $pdf->obtenerContenido($record))
-                            );
-
-                            Notification::make()
-                                ->title('Certificado emitido')
-                                ->body("Código: {$record->codigo_verificacion}. Correo enviado a {$correo}.")
-                                ->success()
-                                ->send();
-                        } catch (\Throwable $e) {
-                            Notification::make()
-                                ->title('Certificado emitido (sin correo)')
-                                ->body("Código: {$record->codigo_verificacion}. Error al enviar correo: {$e->getMessage()}")
-                                ->warning()
-                                ->send();
-                        }
+                        static::enviarCorreoCertificado($record, tituloExito: 'Certificado emitido', tituloFallo: 'Certificado emitido (sin correo)');
                     }),
 
                 Tables\Actions\Action::make('descargar_pdf')
@@ -281,6 +261,19 @@ class CertificadoResource extends Resource
                     ->visible(fn(Certificado $record): bool => $record->estaEmitido())
                     ->url(fn(Certificado $record): string => route('certificados.descargar', $record))
                     ->openUrlInNewTab(),
+
+                // Reintento manual: si el correo falló al emitir (ej. SMTP mal configurado
+                // en ese momento) no había forma de reenviarlo sin duplicar el certificado.
+                Tables\Actions\Action::make('reenviar_correo')
+                    ->label('Reenviar correo')
+                    ->icon('heroicon-o-envelope')
+                    ->color('gray')
+                    ->visible(fn(Certificado $record): bool => $record->estaEmitido())
+                    ->requiresConfirmation()
+                    ->modalHeading('Reenviar correo')
+                    ->modalDescription('Se volverá a enviar el PDF del certificado al correo del participante.')
+                    ->modalSubmitActionLabel('Reenviar')
+                    ->action(fn(Certificado $record) => static::enviarCorreoCertificado($record, tituloExito: 'Correo reenviado', tituloFallo: 'No se pudo reenviar')),
 
                 Tables\Actions\Action::make('anular')
                     ->label('Anular')
@@ -357,5 +350,30 @@ class CertificadoResource extends Resource
             'create' => Pages\CreateCertificado::route('/create'),
             'edit'   => Pages\EditCertificado::route('/{record}/edit'),
         ];
+    }
+
+    protected static function enviarCorreoCertificado(Certificado $record, string $tituloExito, string $tituloFallo): void
+    {
+        $record->load('inscripcion.participante', 'inscripcion.curso');
+        $correo = $record->inscripcion->participante->correo;
+
+        try {
+            $pdf = new ServicioCertificadoPdf();
+            Mail::to($correo)->send(
+                new CertificadoEmitidoMail($record, $pdf->obtenerContenido($record))
+            );
+
+            Notification::make()
+                ->title($tituloExito)
+                ->body("Código: {$record->codigo_verificacion}. Correo enviado a {$correo}.")
+                ->success()
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->title($tituloFallo)
+                ->body("Código: {$record->codigo_verificacion}. Error al enviar correo: {$e->getMessage()}")
+                ->warning()
+                ->send();
+        }
     }
 }

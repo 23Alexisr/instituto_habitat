@@ -39,9 +39,24 @@
     <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
 
     <p style="font-size: 14px; color: #333;">
-        Atentamente,<br>
-        <strong>Instituto Habitat</strong>
+        Atentamente,
     </p>
+
+    <table style="margin-top: 8px;">
+        <tr>
+            <td style="padding-right: 16px; vertical-align: middle;">
+                <img src="{{ asset('images/ih.png') }}" alt="Instituto Habitat" width="56" style="display: block;">
+            </td>
+            <td style="vertical-align: middle; border-left: 2px solid #1e3a8a; padding-left: 16px;">
+                <p style="margin: 0; font-size: 15px; font-weight: bold; color: #1e3a8a;">
+                    Instituto Habitat
+                </p>
+                <p style="margin: 2px 0 0; font-size: 13px; color: #6b7280;">
+                    <a href="https://proyectohabitat.com" style="color: #6b7280; text-decoration: none;">proyectohabitat.com</a>
+                </p>
+            </td>
+        </tr>
+    </table>
 
 </body>
 </html>
