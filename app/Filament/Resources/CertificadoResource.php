@@ -59,7 +59,7 @@ class CertificadoResource extends Resource
                         ->limit(50)
                         ->get()
                         ->mapWithKeys(fn(Inscripcion $inscripcion) => [
-                            $inscripcion->id => "{$inscripcion->participante->nombre} — {$inscripcion->curso->nombre}",
+                            $inscripcion->id => "{$inscripcion->participante->nombre} - {$inscripcion->curso->nombre}",
                         ])
                         ->toArray();
                 })
@@ -67,7 +67,7 @@ class CertificadoResource extends Resource
                     $inscripcion = Inscripcion::with(['participante', 'curso'])->find($value);
 
                     return $inscripcion
-                        ? "{$inscripcion->participante->nombre} — {$inscripcion->curso->nombre}"
+                        ? "{$inscripcion->participante->nombre} - {$inscripcion->curso->nombre}"
                         : null;
                 })
                 ->rules([
@@ -176,7 +176,7 @@ class CertificadoResource extends Resource
                 Tables\Columns\TextColumn::make('certificadoOriginal.codigo_verificacion')
                     ->label('Reemite a')
                     ->fontFamily('mono')
-                    ->placeholder('—')
+                    ->placeholder('-')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

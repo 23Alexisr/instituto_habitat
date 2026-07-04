@@ -13,7 +13,7 @@ class UltimosCertificadosWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Actividad reciente — Certificados';
+    protected static ?string $heading = 'Actividad reciente - Certificados';
 
     public function table(Table $table): Table
     {
@@ -60,7 +60,7 @@ class UltimosCertificadosWidget extends BaseWidget
                     ->label('Fecha emisión')
                     ->date('d/m/Y')
                     ->sortable()
-                    ->placeholder('—'),
+                    ->placeholder('-'),
             ])
             ->paginated(false)
             ->striped();

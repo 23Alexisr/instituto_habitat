@@ -46,13 +46,13 @@ class DatosPreTestSeeder extends Seeder
 
         // ── CONT-2025: Contabilidad Básica ────────────────────────────────────
 
-        // 1. Juan Carlos — emitido correctamente
+        // 1. Juan Carlos - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($juan,   $contabilidad, '2025-03-01')->id, 'estado' => 'emitido',   'fecha_emision' => '2025-06-02']);
 
-        // 2. Ana Sofía — emitida correctamente
+        // 2. Ana Sofía - emitida correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($ana,    $contabilidad, '2025-03-01')->id, 'estado' => 'emitido',   'fecha_emision' => '2025-06-02']);
 
-        // 3 + 4. Carlos Eduardo — ANULADO por error de nombre → reemitido
+        // 3 + 4. Carlos Eduardo - ANULADO por error de nombre → reemitido
         //        Error típico: nombre abreviado al copiar desde lista en papel
         $iCarlosCont = $this->inscribir($carlos, $contabilidad, '2025-03-02');
         $anulado1 = Certificado::create([
@@ -68,18 +68,18 @@ class DatosPreTestSeeder extends Seeder
             'reemitido_de_id' => $anulado1->id,
         ]);
 
-        // 5. Lucía — PENDIENTE (inscripción aprobada, certificado nunca generado)
+        // 5. Lucía - PENDIENTE (inscripción aprobada, certificado nunca generado)
         Certificado::create(['inscripcion_id' => $this->inscribir($lucia,  $contabilidad, '2025-03-02')->id, 'estado' => 'pendiente', 'fecha_emision' => null]);
 
         // ── ADM-2025: Administración de Empresas ──────────────────────────────
 
-        // 6. Manuel — emitido correctamente
+        // 6. Manuel - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($manuel,  $administracion, '2025-04-01')->id, 'estado' => 'emitido', 'fecha_emision' => '2025-07-15']);
 
-        // 7. Diego — emitido correctamente
+        // 7. Diego - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($diego,   $administracion, '2025-04-01')->id, 'estado' => 'emitido', 'fecha_emision' => '2025-07-15']);
 
-        // 8. Valeria — ANULADO por fecha incorrecta (plantilla reutilizada del año anterior)
+        // 8. Valeria - ANULADO por fecha incorrecta (plantilla reutilizada del año anterior)
         Certificado::create([
             'inscripcion_id'   => $this->inscribir($valeria, $administracion, '2025-04-02')->id,
             'estado'           => 'anulado',
@@ -87,26 +87,26 @@ class DatosPreTestSeeder extends Seeder
             'motivo_anulacion' => 'Fecha de emisión incorrecta: plantilla Word reutilizada del ciclo 2024 sin actualizar el año, certificado impreso y entregado con fecha errónea.',
         ]);
 
-        // 9. Roberto — PENDIENTE
+        // 9. Roberto - PENDIENTE
         Certificado::create(['inscripcion_id' => $this->inscribir($roberto,  $administracion, '2025-04-02')->id, 'estado' => 'pendiente', 'fecha_emision' => null]);
 
         // ── MARK-2025: Marketing Digital ──────────────────────────────────────
 
-        // 10. Milagros — emitida correctamente
+        // 10. Milagros - emitida correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($milagros, $marketing, '2025-05-01')->id, 'estado' => 'emitido', 'fecha_emision' => '2025-08-10']);
 
-        // 11. Fernando — emitido correctamente
+        // 11. Fernando - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($fernando, $marketing, '2025-05-01')->id, 'estado' => 'emitido', 'fecha_emision' => '2025-08-10']);
 
-        // 12. Diego (2.° curso) — PENDIENTE
+        // 12. Diego (2.° curso) - PENDIENTE
         Certificado::create(['inscripcion_id' => $this->inscribir($diego,    $marketing, '2025-05-02')->id, 'estado' => 'pendiente', 'fecha_emision' => null]);
 
-        // 13. Roberto (2.° curso) — emitido correctamente
+        // 13. Roberto (2.° curso) - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($roberto,  $marketing, '2025-05-02')->id, 'estado' => 'emitido', 'fecha_emision' => '2025-08-12']);
 
         // ── EXCL-2026: Excel Avanzado ─────────────────────────────────────────
 
-        // 14. Valeria (2.° curso) — ANULADO por datos del docente incorrectos
+        // 14. Valeria (2.° curso) - ANULADO por datos del docente incorrectos
         Certificado::create([
             'inscripcion_id'   => $this->inscribir($valeria,  $excel, '2026-01-15')->id,
             'estado'           => 'anulado',
@@ -114,18 +114,18 @@ class DatosPreTestSeeder extends Seeder
             'motivo_anulacion' => 'Nombre del docente incorrecto: se copió "Dr. Ana Torres Espinoza" (docente de otro curso) por reutilización de plantilla sin revisión previa.',
         ]);
 
-        // 15. Milagros (2.° curso) — PENDIENTE
+        // 15. Milagros (2.° curso) - PENDIENTE
         Certificado::create(['inscripcion_id' => $this->inscribir($milagros, $excel, '2026-01-15')->id, 'estado' => 'pendiente', 'fecha_emision' => null]);
 
-        // 16. Ana (2.° curso) — emitida correctamente
+        // 16. Ana (2.° curso) - emitida correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($ana,      $excel, '2026-01-16')->id, 'estado' => 'emitido', 'fecha_emision' => '2026-03-20']);
 
         // ── SOFT-2026: Calidad de Software ────────────────────────────────────
 
-        // 17. Juan Carlos — emitido correctamente
+        // 17. Juan Carlos - emitido correctamente
         Certificado::create(['inscripcion_id' => $this->inscribir($juan,     $calidad, '2026-04-01')->id, 'estado' => 'emitido', 'fecha_emision' => '2026-06-20']);
 
-        // 18 + 19. Manuel (2.° curso) — ANULADO por duplicado → reemitido
+        // 18 + 19. Manuel (2.° curso) - ANULADO por duplicado → reemitido
         //          Error típico: sin registro centralizado se emite dos veces el mismo certificado
         $iManuelCalidad = $this->inscribir($manuel, $calidad, '2026-04-01');
         $anulado2 = Certificado::create([
@@ -141,7 +141,7 @@ class DatosPreTestSeeder extends Seeder
             'reemitido_de_id' => $anulado2->id,
         ]);
 
-        // 20. Fernando (2.° curso) — PENDIENTE
+        // 20. Fernando (2.° curso) - PENDIENTE
         Certificado::create(['inscripcion_id' => $this->inscribir($fernando, $calidad, '2026-04-02')->id, 'estado' => 'pendiente', 'fecha_emision' => null]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CursoResource\Pages;
+use App\Filament\Resources\CursoResource\RelationManagers;
 use App\Models\Curso;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -133,6 +134,13 @@ class CursoResource extends Resource
             ])
             ->emptyStateHeading('Sin cursos registrados')
             ->emptyStateDescription('Crea el primer curso con el botón de arriba.');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\InscripcionesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

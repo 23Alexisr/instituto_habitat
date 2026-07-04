@@ -14,6 +14,15 @@ class Participante extends Model
         'nombre',
         'dni',
         'correo',
+        'foto',
+        'telefono',
+        'fecha_nacimiento',
+        'genero',
+        'direccion',
+    ];
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
     ];
 
     protected function nombre(): Attribute
