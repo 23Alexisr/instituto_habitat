@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class InscripcionResource extends Resource
 {
@@ -304,15 +305,17 @@ class InscripcionResource extends Resource
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->requiresConfirmation()
-                        ->action(function (Collection $records): void {
-                            $records->each(fn(Inscripcion $record) => $record->update(['estado_finalizacion' => 'aprobado']));
+                        ->action(
+                            function (Collection $records): void {
+                                $records->each(fn(Model $record) => $record->update(['estado_finalizacion' => 'aprobado']));
 
-                            Notification::make()
-                                ->title('Inscripciones actualizadas')
-                                ->body('Se marcaron como aprobadas.')
-                                ->success()
-                                ->send();
-                        })
+                                Notification::make()
+                                    ->title('Inscripciones actualizadas')
+                                    ->body('Se marcaron como aprobadas.')
+                                    ->success()
+                                    ->send();
+                            }
+                        )
                         ->deselectRecordsAfterCompletion(),
 
                     Tables\Actions\BulkAction::make('marcar_desaprobado')
@@ -320,31 +323,35 @@ class InscripcionResource extends Resource
                         ->icon('heroicon-o-x-circle')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->action(function (Collection $records): void {
-                            $records->each(fn(Inscripcion $record) => $record->update(['estado_finalizacion' => 'desaprobado']));
+                        ->action(
+                            function (Collection $records): void {
+                                $records->each(fn(Model $record) => $record->update(['estado_finalizacion' => 'desaprobado']));
 
-                            Notification::make()
-                                ->title('Inscripciones actualizadas')
-                                ->body('Se marcaron como desaprobadas.')
-                                ->success()
-                                ->send();
-                        })
+                                Notification::make()
+                                    ->title('Inscripciones actualizadas')
+                                    ->body('Se marcaron como desaprobadas.')
+                                    ->success()
+                                    ->send();
+                            }
+                        )
                         ->deselectRecordsAfterCompletion(),
 
                     // Misma protección que el DeleteAction individual, aplicada al lote.
                     Tables\Actions\DeleteBulkAction::make()
                         ->label('Eliminar seleccionados')
-                        ->before(function (Collection $records): void {
-                            if ($records->contains(fn(Inscripcion $record) => $record->certificados()->exists())) {
-                                Notification::make()
-                                    ->title('No se puede eliminar')
-                                    ->body('Al menos una inscripción seleccionada tiene certificados asociados. Elimínalos primero desde el módulo de Certificados.')
-                                    ->danger()
-                                    ->send();
+                        ->before(
+                            function (Collection $records): void {
+                                if ($records->contains(fn(Model $record) => $record instanceof Inscripcion && $record->certificados()->exists())) {
+                                    Notification::make()
+                                        ->title('No se puede eliminar')
+                                        ->body('Al menos una inscripción seleccionada tiene certificados asociados. Elimínalos primero desde el módulo de Certificados.')
+                                        ->danger()
+                                        ->send();
 
-                                throw new Halt();
+                                    throw new Halt();
+                                }
                             }
-                        }),
+                        ),
                 ]),
             ])
             ->emptyStateHeading('Sin inscripciones registradas')

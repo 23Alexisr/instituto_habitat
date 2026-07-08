@@ -248,7 +248,7 @@ class CertificadoResource extends Resource
                             $record->codigo_verificacion = Certificado::generarCodigoVerificacion();
                         }
                         $record->estado = 'emitido';
-                        $record->fecha_emision = now()->toDateString();
+                        $record->fecha_emision = now();
                         $record->save();
 
                         static::enviarCorreoCertificado($record, tituloExito: 'Certificado emitido', tituloFallo: 'Certificado emitido (sin correo)');

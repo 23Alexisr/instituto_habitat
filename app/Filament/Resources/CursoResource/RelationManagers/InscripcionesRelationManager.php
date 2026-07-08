@@ -62,7 +62,7 @@ class InscripcionesRelationManager extends RelationManager
                 ->rules([
                     fn(Forms\Get $get, ?Inscripcion $record) => function (string $attribute, mixed $value, \Closure $fail) use ($record): void {
                         $existe = Inscripcion::where('participante_id', $value)
-                            ->where('curso_id', $this->getOwnerRecord()->id)
+                            ->where('curso_id', $this->getOwnerRecord()->getKey())
                             ->when($record?->id, fn($q, $id) => $q->where('id', '!=', $id))
                             ->exists();
                         if ($existe) {

@@ -36,7 +36,7 @@ class ParticipanteResource extends Resource
                         ->icon('heroicon-o-camera')
                         ->schema([
                             Forms\Components\FileUpload::make('foto')
-                                ->label(false)
+                                ->hiddenLabel()
                                 ->avatar()
                                 ->image()
                                 ->imageEditor()

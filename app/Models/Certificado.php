@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+/**
+ * @property int $id
+ * @property int $inscripcion_id
+ * @property string $codigo_verificacion
+ * @property string $estado
+ * @property \Illuminate\Support\Carbon|null $fecha_emision
+ * @property string|null $motivo_anulacion
+ * @property int|null $reemitido_de_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Inscripcion $inscripcion
+ * @property-read \App\Models\Certificado|null $certificadoOriginal
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Certificado> $reemisiones
+ */
 class Certificado extends Model
 {
     protected $table = 'certificados';
@@ -50,16 +64,19 @@ class Certificado extends Model
         return $codigo;
     }
 
+    /** @return BelongsTo<Inscripcion, $this> */
     public function inscripcion(): BelongsTo
     {
         return $this->belongsTo(Inscripcion::class);
     }
 
+    /** @return BelongsTo<Certificado, $this> */
     public function certificadoOriginal(): BelongsTo
     {
         return $this->belongsTo(Certificado::class, 'reemitido_de_id');
     }
 
+    /** @return HasMany<Certificado, $this> */
     public function reemisiones(): HasMany
     {
         return $this->hasMany(Certificado::class, 'reemitido_de_id');

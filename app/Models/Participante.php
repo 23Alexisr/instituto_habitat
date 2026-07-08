@@ -6,6 +6,20 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property string $nombre
+ * @property string $dni
+ * @property string $correo
+ * @property string|null $foto
+ * @property string|null $telefono
+ * @property \Illuminate\Support\Carbon|null $fecha_nacimiento
+ * @property string|null $genero
+ * @property string|null $direccion
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Inscripcion> $inscripciones
+ */
 class Participante extends Model
 {
     protected $table = 'participantes';
@@ -46,6 +60,7 @@ class Participante extends Model
         );
     }
 
+    /** @return HasMany<Inscripcion, $this> */
     public function inscripciones(): HasMany
     {
         return $this->hasMany(Inscripcion::class);
