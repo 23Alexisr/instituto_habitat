@@ -77,7 +77,7 @@
         .estado-anulado .titulo { font-size: 1rem; font-weight: 700; color: #dc2626; }
         .estado-anulado .subtitulo { font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; }
 
-        /* Estado: NO ENCONTRADO */
+        /* Estado: NO ENCONTRADO / PENDIENTE */
         .estado-noenc {
             display: flex;
             align-items: center;
@@ -201,8 +201,18 @@
                     </div>
                 @endif
 
+            @elseif ($certificado->estado === 'pendiente')
+                {{-- Pendiente: no se muestra información personal hasta que se emita --}}
+                <div class="estado-noenc">
+                    <span class="icono">⏳</span>
+                    <div>
+                        <div class="titulo">Certificado en proceso</div>
+                        <div class="subtitulo">Este certificado aún no ha sido emitido oficialmente. Vuelve a intentarlo más tarde.</div>
+                    </div>
+                </div>
+
             @else
-                {{-- Válido (emitido o pendiente) --}}
+                {{-- Solo llega aquí si estado === 'emitido' --}}
                 <div class="estado-valido">
                     <span class="icono">✅</span>
                     <div>
