@@ -31,7 +31,7 @@ class SesionActivaResource extends Resource
 
     // Toda visita al sitio (login, verificador público, etc.) crea una fila en
     // "sessions" aunque nadie inicie sesión. Sin este filtro, tráfico anónimo de
-    // cualquier país aparecía "en línea" y se veía como si hubieran hackeado la cuenta.
+   
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->whereNotNull('user_id');

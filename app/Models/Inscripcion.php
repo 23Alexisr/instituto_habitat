@@ -54,6 +54,7 @@ class Inscripcion extends Model
     }
 
     /** @return HasOne<Certificado, $this> */
+    
     public function certificadoVigente(): HasOne
     {
         return $this->hasOne(Certificado::class)
