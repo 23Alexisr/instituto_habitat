@@ -181,14 +181,6 @@
                 </div>
 
                 <div class="detalle-grid">
-                    <div class="detalle-item detalle-full">
-                        <label>Participante</label>
-                        <span>{{ $certificado->inscripcion->participante->nombre }}</span>
-                    </div>
-                    <div class="detalle-item">
-                        <label>DNI</label>
-                        <span>{{ $certificado->inscripcion->participante->dni }}</span>
-                    </div>
                     <div class="detalle-item">
                         <label>Código</label>
                         <span class="codigo-tag">{{ $certificado->codigo_verificacion }}</span>
@@ -228,7 +220,7 @@
                     </div>
                     <div class="detalle-item">
                         <label>DNI</label>
-                        <span>{{ $certificado->inscripcion->participante->dni }}</span>
+                        <span>{{ $certificado->inscripcion->participante->dni_enmascarado }}</span>
                     </div>
                     <div class="detalle-item">
                         <label>Código</label>
@@ -267,7 +259,7 @@
     </div>
 
     <p class="footer-nota">
-        Instituto Peruano de Estudios Habitat &mdash; Sistema de verificación de certificados
+         Sistema de verificación de certificados
     </p>
 
 </body>

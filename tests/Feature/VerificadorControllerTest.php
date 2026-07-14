@@ -63,6 +63,8 @@ class VerificadorControllerTest extends TestCase
         $response->assertOk();
         $response->assertSee('Pedro Sanchez');
         $response->assertSee('ABCD1234');
+        $response->assertSee('123***78');
+        $response->assertDontSee('12345678');
     }
 
     // El controller hace strtoupper($codigo) antes de buscar, minusculas deben encontrar el mismo certificado
@@ -101,7 +103,25 @@ class VerificadorControllerTest extends TestCase
         $response->assertDontSee('12345678');
     }
 
+    // Un certificado "anulado" no debe exponer datos personales, solo el codigo y el motivo
+    public function test_certificado_anulado_no_expone_datos_personales(): void
+    {
+        $this->crearCertificado('ANULADO2', 'anulado');
 
+        $response = $this->get('/verificar/ANULADO2');
 
+        $response->assertOk();
+        $response->assertDontSee('Pedro Sanchez');
+        $response->assertDontSee('12345678');
+    }
 
+    // throttle:15,1 en la ruta — la request 16 en el mismo minuto debe bloquearse
+    public function test_limita_intentos_por_minuto(): void
+    {
+        for ($i = 0; $i < 15; $i++) {
+            $this->get('/verificar/NOEXISTE')->assertOk();
+        }
+
+        $this->get('/verificar/NOEXISTE')->assertStatus(429);
+    }
 }

@@ -60,6 +60,22 @@ class Participante extends Model
         );
     }
 
+    protected function dniEnmascarado(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $dni = $this->dni;
+                $longitud = strlen($dni);
+
+                if ($longitud <= 4) {
+                    return str_repeat('*', $longitud);
+                }
+
+                return substr($dni, 0, 3) . str_repeat('*', $longitud - 5) . substr($dni, -2);
+            },
+        );
+    }
+
     /** @return HasMany<Inscripcion, $this> */
     public function inscripciones(): HasMany
     {
