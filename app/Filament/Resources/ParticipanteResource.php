@@ -81,7 +81,7 @@ class ParticipanteResource extends Resource
                                 ->placeholder('987654321')
                                 ->tel()
                                 ->inputMode('numeric')
-                                ->maxLength(20)
+                                ->maxLength(9)
                                 ->extraInputAttributes([
                                     'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
                                 ]),

@@ -60,6 +60,8 @@ class Participante extends Model
         );
     }
 
+    // DNI parcialmente oculto para mostrar en contextos públicos ( verificador de certificados).
+    // Deja visibles los primeros 3 y últimos 2 dígitos, oculta el resto con asteriscos.
     protected function dniEnmascarado(): Attribute
     {
         return Attribute::make(
@@ -67,10 +69,15 @@ class Participante extends Model
                 $dni = $this->dni;
                 $longitud = strlen($dni);
 
+                // DNI corto o inválido: no hay suficientes dígitos para dejar 3+2 visibles
+                // sin terminar mostrando el DNI completo, mejor ocultarlo entero.
                 if ($longitud <= 4) {
                     return str_repeat('*', $longitud);
                 }
 
+                // Caso normal (DNI peruano de 8 dígitos): primeros 3 + asteriscos en el medio + últimos 2.
+                // La cantidad de asteriscos se calcula segun la longitud real, no queda fijo en 3,
+                // para que tambien funcione bien si algun dia hay un DNI de otra longitud.
                 return substr($dni, 0, 3) . str_repeat('*', $longitud - 5) . substr($dni, -2);
             },
         );

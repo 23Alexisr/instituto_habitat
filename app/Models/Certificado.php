@@ -49,11 +49,20 @@ class Certificado extends Model
         });
     }
 
+    // Genera un código de verificación único de 8 caracteres para un certificado.
+    // No es secuencial a propósito: un código adivinable (1, 2, 3...) permitiría
+    // a cualquiera enumerar certificados de otras personas cambiando un número en la URL.
     public static function generarCodigoVerificacion(): string
     {
-        // Excluye 0/O, 1/I/L para evitar confusión visual al leer el código
+        // Excluye 0/O, 1/I/L para evitar confusión visual al leer el código.
+        // El código se imprime en el certificado físico y alguien lo va a tipear a mano
+        // para verificarlo, por eso esto es una decisión de UX, no solo de seguridad.
         $caracteres = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
+        // do-while porque generamos al azar (con random_int, criptográficamente seguro,
+        // no rand()): en teoría puede haber colisión con un código ya existente, aunque
+        // con 31^8 combinaciones posibles es extremadamente improbable en la práctica.
+        // El loop es lo único que garantiza unicidad de verdad, no solo "probablemente único".
         do {
             $codigo = '';
             for ($i = 0; $i < 8; $i++) {
